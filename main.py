@@ -239,7 +239,7 @@ class FaceReconsturction:
                 print("ERROR: Pregenerated latents and embeddings are not loaded")
                 return
             
-            best_latent, best_embedding = self.find_closest_pregen(target_emb, pregen_latents, pregen_embeddings, offset=pregen_offset)
+            best_latent, best_embedding = self.find_closest_pregen(target_emb, self.pregen_latents, self.pregen_embeddings, offset=pregen_offset)
             best_latent = best_latent.to(self.device)
             best_embedding = best_embedding.to(self.device)
             best_norm = (target_emb-best_embedding).norm()

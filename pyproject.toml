@@ -11,6 +11,7 @@ description = "Fork of an implementation of the paper 'Realistic Face Reconstruc
 dependencies = [
     "argparse",
     "opencv-python",
+    "ironcore-alloy",
     "matplotlib",
     "numpy",
     "torch",

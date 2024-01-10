@@ -426,6 +426,7 @@ async def main():
         result = await face_reconstruction.perform_face_reconstruction(
             target_emb,
             pregen=args.pregen,
+            encrypt=args.encrypt,
             init_zeros=False,
             use_annealing=args.anneal,
             iters=args.iters,

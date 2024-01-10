@@ -1,0 +1,29 @@
+# using https://hatch.pypa.io/latest/
+# hatch shell
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "face-reconstruction"
+authors = [{ name = "IronCore Labs", email = "info@ironcorelabs.com" }]
+description = "Fork of an implementation of the paper 'Realistic Face Reconstruction from Deep Embeddings' to attack FaceNet embeddings of arbitrary images."
+dependencies = [
+    "argparse",
+    "opencv-python",
+    "matplotlib",
+    "numpy",
+    "torch",
+    "torchvision",
+    "pillow",
+    "facenet_pytorch",
+    "scikit-image",
+    "tqdm"
+]
+version = "0.0.1"
+
+[project.urls]
+Homepage = "https://ironcorelabs.com"
+
+[tool.hatch.envs.default]
+python = "3.10"

@@ -12,7 +12,7 @@ from random import random
 from skimage import io
 import sys
 from tqdm import tqdm
-import ironcore_alloy
+import ironcore_alloy as alloy
 import asyncio
 
 sys.path.append("./stylegan2-ada-pytorch")
@@ -247,21 +247,23 @@ class FaceReconstruction:
             key_bytes = b"somereallylongandverysecurekeyinsteadofanexamplestring"
             approximation_factor = 5
             vector_secrets = {
-                "facial_recognition": VectorSecret(
+                "facial_recognition": alloy.VectorSecret(
                     approximation_factor,
-                    RotatableSecret(StandaloneSecret(1, Secret(key_bytes)), None),
+                    alloy.RotatableSecret(
+                        alloy.StandaloneSecret(1, alloy.Secret(key_bytes)), None
+                    ),
                 ),
             }
-            standard_secrets = StandardSecrets(None, [])
+            standard_secrets = alloy.StandardSecrets(None, [])
             deterministic_secrets = {}
-            config = StandaloneConfiguration(
+            config = alloy.StandaloneConfiguration(
                 standard_secrets, deterministic_secrets, vector_secrets
             )
-            sdk = Standalone(config)
+            sdk = alloy.Standalone(config)
             embedding_vector = target_emb.tolist()[0]
             encrypted_vector = await sdk.vector().encrypt(
-                PlaintextVector(embedding_vector, "facial_recognition", ""),
-                AlloyMetadata.new_simple(""),
+                alloy.PlaintextVector(embedding_vector, "facial_recognition", ""),
+                alloy.AlloyMetadata.new_simple(""),
             )
             print(encrypted_vector)
             encrypted_vector = encrypted_vector.encrypted_vector

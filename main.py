@@ -32,7 +32,7 @@ def distance(embeddings1, embeddings2, distance_metric=0):
 
     return dist
 
-class FaceReconsturction:
+class FaceReconstruction:
     
     def __init__(self, device='cuda'):
         self.device = device
@@ -185,7 +185,7 @@ class FaceReconsturction:
 
         Arguments:
             target_emb: torch.Tensor
-                A Tensor of shape (1, 512), the target tensor to reconsturc a face for. 
+                A Tensor of shape (1, 512), the target tensor to reconstruct a face for. 
             pregen: Boolean
                 Whether to start from the closest pregenerated point.
                 If false, will start from a random point.
@@ -193,7 +193,7 @@ class FaceReconsturction:
                 If pregen, will use n-th-to-best pregenerated match (default 0)
             init_zeros: Boolean
                 If pregen is off, will either start at a zero vector (True), or a
-                random nosie vector (False)
+                random noise vector (False)
             iters: Number
                 Number of iterations to run. More iteration generally mean better
                 results, although tuning of std_multiplier is required
@@ -225,6 +225,8 @@ class FaceReconsturction:
                 return safe_exp(-(e_prime-e)/T)
 
         # Make sure we're on gpu
+        embedding_list = target_emb.tolist()[0]
+
         target_emb = target_emb.to(self.device)
 
         # Start from random point, or pregenerated match
@@ -308,6 +310,7 @@ if __name__ == "__main__":
     parser.add_argument("--iters", type=int, default=400, help="Number of iterations")
     parser.add_argument("--img", type=str, help="Image path for reconstruction")
     parser.add_argument("--save_details", action="store_true", help="Save .pt file with detailed results")
+    parser.add_argument("--encrypt", action="store_true", help="Encrypt the embedding before reconstructing. Saves to output_encrypted.png")
 
     args = parser.parse_args()
 
@@ -317,7 +320,7 @@ if __name__ == "__main__":
         print("Running with annealing")
     print(args)
         
-    face_reconstruction = FaceReconsturction()
+    face_reconstruction = FaceReconstruction()
     
     if args.setup:
         print("Running setup procedure...")
@@ -335,13 +338,19 @@ if __name__ == "__main__":
         with torch.no_grad():
             target_embeddings = [face_reconstruction.resnet(im.unsqueeze(0)).cpu() for im in images_pil_crop]
 
+        if args.encrypt:
+            # modify target_emb using ironcore_alloy
+            pass
         target_emb = target_embeddings[0]
         result = face_reconstruction.perform_face_reconstruction(target_emb, pregen=args.pregen, init_zeros=False, 
                                              use_annealing=args.anneal, iters=args.iters, std_multiplier=0.992)
         
         best_latent, best_list, best_norm_list, best_latent_list, best_emb_list = result
         im = Image.fromarray(best_list[-1].detach().cpu().numpy())
-        im.save("output.png")
+        if args.encrypt:
+            im.save("output_encrypted.png")
+        else:
+            im.save("output.png")
         
         if args.save_details:
             saved_output = {'targets': target_embeddings, 'results': results}

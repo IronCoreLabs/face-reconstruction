@@ -15,10 +15,9 @@
           buildInputs = with pkgs;
             [
               pkg-config
-              # used when running python tests
               pkgs.python310
-              # used when building python distributions
               pkgs.hatch
+              pkgs.zlib
             ] ++ pkgs.lib.optionals pkgs.stdenv.isDarwin
               [ pkgs.darwin.apple_sdk.frameworks.SystemConfiguration ];
         };

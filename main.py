@@ -14,6 +14,8 @@ import sys
 from tqdm import tqdm
 import ironcore_alloy as alloy
 import asyncio
+from glob import glob
+import time
 
 sys.path.append("./stylegan2-ada-pytorch")
 
@@ -138,9 +140,12 @@ class FaceReconstruction:
         """
         Pregenerates 160k (latent vector, embedding) pairs for faster initial matching.
         """
+        millis_time = round(time.time() * 1000)
         for i in range(20):
             self.generate_and_save(
-                n=8000, batch_size=16, file_name="pregenerated_" + str(i) + ".pt"
+                n=8000,
+                batch_size=16,
+                file_name="pregenerated_" + millis_time + "_" + str(i) + ".pt",
             )
 
     def load_pregenerated(self):
@@ -153,10 +158,10 @@ class FaceReconstruction:
         """
         all_latents = []
         all_embeddings = []
-        for i in range(20):
-            latents, embeddings = torch.load(
-                "pregenerated/pregenerated_" + str(i) + ".pt"
-            )
+        filenames = glob("pregenerated/*.pt")
+        print("Loading " + len(filenames) + " pregenerated files.")
+        for filename in filenames:
+            latents, embeddings = torch.load(filename)
             all_latents.append(latents)
             all_embeddings.append(embeddings)
 

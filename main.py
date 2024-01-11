@@ -270,10 +270,8 @@ class FaceReconstruction:
                 alloy.PlaintextVector(embedding_vector, "facial_recognition", ""),
                 alloy.AlloyMetadata.new_simple(""),
             )
-            print(encrypted_vector)
             encrypted_vector = encrypted_vector.encrypted_vector
             target_emb = torch.nn.functional.normalize(torch.Tensor(encrypted_vector), dim=0)
-            print(target_emb)
 
         # Make sure we're on gpu
         target_emb = target_emb.to(self.device)

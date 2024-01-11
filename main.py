@@ -420,7 +420,7 @@ async def main():
         ]
         try:
             images_pil_crop = [
-                face_reconstruction.mtcnn(im, save_path="face-mtcnn.png").to("cuda") for im in images_pil
+                face_reconstruction.mtcnn(im).to("cuda") for im in images_pil
             ]
         except:
             print("No face detected in input image.")

@@ -140,12 +140,12 @@ class FaceReconstruction:
         """
         Pregenerates 160k (latent vector, embedding) pairs for faster initial matching.
         """
-        millis_time = round(time.time() * 1000)
+        millis_time_str = str(round(time.time() * 1000))
         for i in range(20):
             self.generate_and_save(
                 n=8000,
                 batch_size=16,
-                file_name="pregenerated_" + millis_time + "_" + str(i) + ".pt",
+                file_name="pregenerated_" + millis_time_str + "_" + str(i) + ".pt",
             )
 
     def load_pregenerated(self):

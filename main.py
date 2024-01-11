@@ -136,12 +136,12 @@ class FaceReconstruction:
 
         torch.save([all_latents, all_embeddings], file_name)
 
-    def run_pregeneration_routine(self):
+    def run_pregeneration_routine(self, n):
         """
-        Pregenerates 160k (latent vector, embedding) pairs for faster initial matching.
+        Pregenerates n batches of (latent vector, embedding) pairs for faster initial matching.
         """
         millis_time_str = str(round(time.time() * 1000))
-        for i in range(20):
+        for i in range(n):
             self.generate_and_save(
                 n=8000,
                 batch_size=16,
@@ -367,6 +367,12 @@ async def main():
         help="Pregenerate 160k embeddings (stored in the same folder)",
     )
     parser.add_argument(
+        "--setup_batches",
+        type=int,
+        default=20,
+        help="Number of batches of pregenerated faces. Each batch has 8000 faces.",
+    )
+    parser.add_argument(
         "--pregen",
         action="store_true",
         help="Use pregenerated embedding to select a starting location",
@@ -401,7 +407,7 @@ async def main():
 
     if args.setup:
         print("Running setup procedure...")
-        face_reconstruction.run_pregeneration_routine()
+        face_reconstruction.run_pregeneration_routine(args.setup_batches)
 
     else:
         if args.pregen:

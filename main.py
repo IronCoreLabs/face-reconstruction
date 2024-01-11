@@ -272,7 +272,7 @@ class FaceReconstruction:
             )
             print(encrypted_vector)
             encrypted_vector = encrypted_vector.encrypted_vector
-            target_emb = torch.nn.functional.normalize(torch.Tensor(encrypted_vector, dim=0))
+            target_emb = torch.nn.functional.normalize(torch.Tensor(encrypted_vector), dim=0)
             print(target_emb)
 
         # Make sure we're on gpu

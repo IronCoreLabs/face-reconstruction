@@ -159,7 +159,7 @@ class FaceReconstruction:
         all_latents = []
         all_embeddings = []
         filenames = glob("pregenerated/*.pt")
-        print("Loading " + len(filenames) + " pregenerated files.")
+        print("Loading " + str(len(filenames)) + " pregenerated files.")
         for filename in filenames:
             latents, embeddings = torch.load(filename)
             all_latents.append(latents)

@@ -272,7 +272,6 @@ class FaceReconstruction:
             )
             print(encrypted_vector)
             encrypted_vector = encrypted_vector.encrypted_vector
-            encrypted_vector = target_emb.tolist()[0]
             target_emb = torch.FloatTensor(encrypted_vector)
             print(target_emb)
 

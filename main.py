@@ -430,11 +430,6 @@ async def main():
             ]
 
         target_emb = target_embeddings[0]
-        if args.encrypt:
-            embedding_list = target_emb.tolist()[0]
-            # encrypt embedding_list using ironcore_alloy, turn into a Tensor of shape (1, 512)
-            # then assign that to target_emb
-            pass
         result = await face_reconstruction.perform_face_reconstruction(
             target_emb,
             pregen=args.pregen,

@@ -1,5 +1,5 @@
 import argparse
-import cv2
+import math
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
@@ -52,7 +52,7 @@ class FaceReconstruction:
         # Face recognition
         self.resnet = InceptionResnetV1(pretrained="vggface2").eval().to(device)
 
-        # Face detect/aling/crop
+        # Face detect/align/crop
         self.mtcnn = MTCNN(
             image_size=160,
             margin=14,
@@ -419,7 +419,7 @@ async def main():
         ]
         try:
             images_pil_crop = [
-                face_reconstruction.mtcnn(im).to("cuda") for im in images_pil
+                face_reconstruction.mtcnn(im, save_path="face-mtcnn.png").to("cuda") for im in images_pil
             ]
         except:
             print("No face detected in input image.")
@@ -432,7 +432,7 @@ async def main():
         with torch.no_grad():
             target_embeddings = [
                 face_reconstruction.resnet(im.unsqueeze(0)).cpu()
-                for im in images_pil_crop
+                for im in images_pil_crop_pp
             ]
 
         target_emb = target_embeddings[0]
@@ -454,7 +454,7 @@ async def main():
             im.save("output.png")
 
         if args.save_details:
-            saved_output = {"targets": target_embeddings, "results": results}
+            saved_output = {"targets": target_embeddings, "results": result}
             torch.save(saved_output, "result.pt")
 
 

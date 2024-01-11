@@ -12,7 +12,7 @@ from random import random
 from skimage import io
 import sys
 from tqdm import tqdm
-import ironcore_alloy as alloy
+# import ironcore_alloy as alloy
 import asyncio
 from glob import glob
 import time
@@ -249,29 +249,30 @@ class FaceReconstruction:
         # If encrypt is on, encrypt the embedding and bring it back to a Tensor before running
         if encrypt:
             # initialize IronCore Alloy
-            key_bytes = b"somereallylongandverysecurekeyinsteadofanexamplestring"
-            approximation_factor = 5
-            vector_secrets = {
-                "facial_recognition": alloy.VectorSecret(
-                    approximation_factor,
-                    alloy.RotatableSecret(
-                        alloy.StandaloneSecret(1, alloy.Secret(key_bytes)), None
-                    ),
-                ),
-            }
-            standard_secrets = alloy.StandardSecrets(None, [])
-            deterministic_secrets = {}
-            config = alloy.StandaloneConfiguration(
-                standard_secrets, deterministic_secrets, vector_secrets
-            )
-            sdk = alloy.Standalone(config)
-            embedding_vector = target_emb.tolist()[0]
-            encrypted_vector = await sdk.vector().encrypt(
-                alloy.PlaintextVector(embedding_vector, "facial_recognition", ""),
-                alloy.AlloyMetadata.new_simple(""),
-            )
-            print(encrypted_vector)
-            encrypted_vector = encrypted_vector.encrypted_vector
+            # key_bytes = b"somereallylongandverysecurekeyinsteadofanexamplestring"
+            # approximation_factor = 5
+            # vector_secrets = {
+            #     "facial_recognition": alloy.VectorSecret(
+            #         approximation_factor,
+            #         alloy.RotatableSecret(
+            #             alloy.StandaloneSecret(1, alloy.Secret(key_bytes)), None
+            #         ),
+            #     ),
+            # }
+            # standard_secrets = alloy.StandardSecrets(None, [])
+            # deterministic_secrets = {}
+            # config = alloy.StandaloneConfiguration(
+            #     standard_secrets, deterministic_secrets, vector_secrets
+            # )
+            # sdk = alloy.Standalone(config)
+            # embedding_vector = target_emb.tolist()[0]
+            # encrypted_vector = await sdk.vector().encrypt(
+            #     alloy.PlaintextVector(embedding_vector, "facial_recognition", ""),
+            #     alloy.AlloyMetadata.new_simple(""),
+            # )
+            # print(encrypted_vector)
+            # encrypted_vector = encrypted_vector.encrypted_vector
+            encrypted_vector = target_emb.tolist()[0]
             target_emb = torch.FloatTensor(encrypted_vector)
             print(target_emb)
 

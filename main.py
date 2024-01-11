@@ -108,7 +108,7 @@ class FaceReconstruction:
             img = img.unsqueeze(0)
 
         with torch.no_grad():
-            im_crop = self.mtcnn(img)
+            im_crop = self.mtcnn(img.cpu())
             im_all = torch.cat(
                 [im.unsqueeze(0) for im in im_crop if im is not None], dim=0
             )
@@ -420,7 +420,7 @@ async def main():
         ]
         try:
             images_pil_crop = [
-                face_reconstruction.mtcnn(im, save_path="face-mtcnn.png").to("cuda") for im in images_pil
+                face_reconstruction.mtcnn(im, save_path="face-cropped.png").to("cuda") for im in images_pil
             ]
         except:
             print("No face detected in input image.")

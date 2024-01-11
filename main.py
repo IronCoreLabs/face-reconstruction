@@ -426,14 +426,14 @@ async def main():
             print("No face detected in input image.")
             exit(1)
 
-        # images_pil_crop_pp = [
-        #     im.detach().cpu().permute(1, 2, 0) * 0.5 + 0.5 for im in images_pil_crop
-        # ]
+        images_pil_crop_pp = [
+            im.detach().cpu() * 0.5 + 0.5 for im in images_pil_crop
+        ]
 
         with torch.no_grad():
             target_embeddings = [
                 face_reconstruction.resnet(im.unsqueeze(0)).cpu()
-                for im in images_pil_crop
+                for im in images_pil_crop_pp
             ]
 
         target_emb = target_embeddings[0]

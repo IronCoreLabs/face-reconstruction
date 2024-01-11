@@ -1,1 +1,5 @@
 .direnv
+**.pkl
+**.png
+stylegan2-ada-pytorch/**
+pregenerated/**

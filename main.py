@@ -406,9 +406,14 @@ async def main():
         images_pil = [
             Image.open(image_path).convert("RGB") for image_path in image_paths
         ]
-        images_pil_crop = [
-            face_reconstruction.mtcnn(im).to("cuda") for im in images_pil
-        ]
+        try:
+            images_pil_crop = [
+                face_reconstruction.mtcnn(im).to("cuda") for im in images_pil
+            ]
+        except:
+            print("No face detected in input image.")
+            exit(1)
+
         images_pil_crop_pp = [
             im.detach().cpu().permute(1, 2, 0) * 0.5 + 0.5 for im in images_pil_crop
         ]

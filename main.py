@@ -108,7 +108,7 @@ class FaceReconstruction:
             img = img.unsqueeze(0)
 
         with torch.no_grad():
-            im_crop = self.mtcnn(img).to("cuda")
+            im_crop = self.mtcnn(img)
             im_all = torch.cat(
                 [im.unsqueeze(0) for im in im_crop if im is not None], dim=0
             )

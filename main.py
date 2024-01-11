@@ -338,7 +338,7 @@ class FaceReconstruction:
 
                 if P(current_norm, norms[best_idx], T) > random():
                     if use_annealing:
-                        print("[annealing] new current:", norms[best_idx].item())
+                        print(f"[annealing {i}/{iters}] new current:", norms[best_idx].item())
                     current_latent = neighbor_latents[best_idx]
                     current_norm = norms[best_idx]
 

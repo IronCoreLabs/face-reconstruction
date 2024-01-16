@@ -270,11 +270,9 @@ class FaceReconstruction:
                 alloy.PlaintextVector(embedding_vector, "facial_recognition", ""),
                 alloy.AlloyMetadata.new_simple(""),
             )
-            print(encrypted_vector)
             encrypted_vector = encrypted_vector.encrypted_vector
             target_emb = torch.FloatTensor(encrypted_vector)
-            print(target_emb)
-
+            
         # Make sure we're on gpu
         target_emb = target_emb.to(self.device)
 
@@ -340,7 +338,7 @@ class FaceReconstruction:
 
                 if P(current_norm, norms[best_idx], T) > random():
                     if use_annealing:
-                        print("[annealing] new current:", norms[best_idx].item())
+                        print(f"[annealing {i}/{iters}] new current:", norms[best_idx].item())
                     current_latent = neighbor_latents[best_idx]
                     current_norm = norms[best_idx]
 

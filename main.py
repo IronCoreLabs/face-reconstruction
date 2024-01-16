@@ -271,8 +271,8 @@ class FaceReconstruction:
                 alloy.AlloyMetadata.new_simple(""),
             )
             encrypted_vector = encrypted_vector.encrypted_vector
-            target_emb = torch.nn.functional.normalize(torch.Tensor(encrypted_vector), dim=0)
-
+            target_emb = torch.FloatTensor(encrypted_vector)
+            
         # Make sure we're on gpu
         target_emb = target_emb.to(self.device)
 
